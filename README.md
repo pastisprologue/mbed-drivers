@@ -14,25 +14,25 @@ I tried my absolute best to follow mbed’s style guide, but it’s totally poss
 When two drivers love each other very much, something special can sometimes happen.  In this case, a TriggeredTimeout is the love-child of an InterruptIn and Timeout.  When the micro sees a rising or falling edge on the specified pin, a hardware timer starts counting.  When the specified count is reached by the timer, an interrupt occurs.
 
 ### Original Code:
-	```cpp
-	InterruptIn event(p16);
-	Timeout timeout;
+```cpp
+InterruptIn event(p16);
+Timeout timeout;
 
-	void atttimeout() {
-		//delayed ISR;
-	}
+void atttimeout() {
+	//delayed ISR;
+}
 
-	void trigger() {
-		timeout.attach(&attimeout, 5);
-	}
+void trigger() {
+	timeout.attach(&attimeout, 5);
+}
 
-	int main() {
-		event.rise(&trigger);
-		while(1) {
-			//Loop forever
-		}
+int main() {
+	event.rise(&trigger);
+	while(1) {
+		//Loop forever
 	}
-	```
+}
+```
 ### Using TriggeredTimeout:
 	```cpp
 	TriggeredTimeout triggeredTimeout(p16);
