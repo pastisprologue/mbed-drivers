@@ -1,4 +1,4 @@
-#Hey mbed Community!
+# Hey mbed Community!
 
 I’ve been using mbed a bunch and now I finally feel like I have something I can contribute back!  
 
@@ -10,10 +10,10 @@ I should also note that I did my best to not modify any mbed source. For example
 
 I tried my absolute best to follow mbed’s style guide, but it’s totally possible I missed something.
 
-##TriggeredTimeout
+## TriggeredTimeout
 When two drivers love each other very much, something special can sometimes happen.  In this case, a TriggeredTimeout is the love-child of an InterruptIn and Timeout.  When the micro sees a rising or falling edge on the specified pin, a hardware timer starts counting.  When the specified count is reached by the timer, an interrupt occurs.
 
-###Original Code:
+### Original Code:
 	```cpp
 	InterruptIn event(p16);
 	Timeout timeout;
@@ -33,7 +33,7 @@ When two drivers love each other very much, something special can sometimes happ
 		}
 	}
 	```
-###Using TriggeredTimeout:
+### Using TriggeredTimeout:
 	```cpp
 	TriggeredTimeout triggeredTimeout(p16);
 
@@ -49,10 +49,10 @@ When two drivers love each other very much, something special can sometimes happ
 	}
 	```
 
-##CounterIn
+## CounterIn
 Pulse Trains are a pretty popular sensor output in which the sensor sends out a pulse for every specified amount of whatever it is sensing.  Examples of sensors that use this are Geiger counters, coloumb counters, and Hall Sensors.  Using InterruptIn is the way I initially counted these pulses, but if you have a really fast pulse train, then the MCU can end up spending a lot of time in the ISR, and it’s even possible to miss pulses.  Then I learned that some hardware timers can actually accept an external clock by which they increment their internal counter register.  The CounterIn can be configured to increment on rising edges, falling edges, or both, then you just read the counter register to know the count.  Beware: some timers are 16-bit, some are 32-bit, so where that counter register overflows will vary. 
 
-###Original Code:
+### Original Code:
 	```cpp
 	InterruptIn event(p16);
 
@@ -69,7 +69,7 @@ Pulse Trains are a pretty popular sensor output in which the sensor sends out a 
 		}
 	}
 	```
-###Using CounterIn:
+### Using CounterIn:
 	```cpp
 	CounterIn counter(p16);
 
@@ -81,10 +81,10 @@ Pulse Trains are a pretty popular sensor output in which the sensor sends out a 
 	}
 	```
 
-##EncoderIn
+## EncoderIn
 Wow, wasn’t CounterIn super useful in freeing up processor time!?  What if CounterIn didn’t just count up, but instead also counted down depending on some other variable?  That’s where EncoderIn comes in. So EncoderIn takes two physical inputs, one that counts edges (just like CounterIn), and one that compares levels to know whether to count up or down.  Again, just read the counter register of the hardware timer you’re using and you’ll know position of your encoder, no processor time needed!  You can even set interrupts to trigger when certain positions are met! Woohoo!
 
-###Using EncoderIn:
+### Using EncoderIn:
 	```cpp
 	EncoderIn qei(PB_4, PB_5);
 
