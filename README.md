@@ -34,64 +34,64 @@ int main() {
 }
 ```
 ### Using TriggeredTimeout:
-	```cpp
-	TriggeredTimeout triggeredTimeout(p16);
+```cpp
+TriggeredTimeout triggeredTimeout(p16);
 
-	void delayedTrigger() {
-		//delayedISR;
-	}
+void delayedTrigger() {
+	//delayedISR;
+}
 
-	int main() {
-		triggeredTimeout.rise(&delayedTrigger, 5);
-		while(1) {
-			//Loop forever
-		}
+int main() {
+	triggeredTimeout.rise(&delayedTrigger, 5);
+	while(1) {
+		//Loop forever
 	}
-	```
+}
+```
 
 ## CounterIn
 Pulse Trains are a pretty popular sensor output in which the sensor sends out a pulse for every specified amount of whatever it is sensing.  Examples of sensors that use this are Geiger counters, coloumb counters, and Hall Sensors.  Using InterruptIn is the way I initially counted these pulses, but if you have a really fast pulse train, then the MCU can end up spending a lot of time in the ISR, and it’s even possible to miss pulses.  Then I learned that some hardware timers can actually accept an external clock by which they increment their internal counter register.  The CounterIn can be configured to increment on rising edges, falling edges, or both, then you just read the counter register to know the count.  Beware: some timers are 16-bit, some are 32-bit, so where that counter register overflows will vary. 
 
 ### Original Code:
-	```cpp
-	InterruptIn event(p16);
+```cpp
+InterruptIn event(p16);
 
-	int counter = 0;
+int counter = 0;
 
-	void trigger() {
-		counter++;
+void trigger() {
+	counter++;
+}
+
+int main() {
+	event.rise(&trigger);
+	while(1) {
+		printf("Count: %d\r\n", counter);
 	}
-
-	int main() {
-		event.rise(&trigger);
-		while(1) {
-			printf("Count: %d\r\n", counter);
-		}
-	}
-	```
+}
+```
 ### Using CounterIn:
-	```cpp
-	CounterIn counter(p16);
+```cpp
+CounterIn counter(p16);
 
-	int main() {
-		counter.start();
-		while(1) {
-			printf("Count: %d\r\n", counter.read());
-		}
+int main() {
+	counter.start();
+	while(1) {
+		printf("Count: %d\r\n", counter.read());
 	}
-	```
+}
+```
 
 ## EncoderIn
 Wow, wasn’t CounterIn super useful in freeing up processor time!?  What if CounterIn didn’t just count up, but instead also counted down depending on some other variable?  That’s where EncoderIn comes in. So EncoderIn takes two physical inputs, one that counts edges (just like CounterIn), and one that compares levels to know whether to count up or down.  Again, just read the counter register of the hardware timer you’re using and you’ll know position of your encoder, no processor time needed!  You can even set interrupts to trigger when certain positions are met! Woohoo!
 
 ### Using EncoderIn:
-	```cpp
-	EncoderIn qei(PB_4, PB_5);
+```cpp
+EncoderIn qei(PB_4, PB_5);
 
-	int main() {
-		qei.start();
-		while(1) {
-			printf("Position: %d\r\n", qei.read());
-		}
+int main() {
+	qei.start();
+	while(1) {
+		printf("Position: %d\r\n", qei.read());
 	}
-	```
+}
+```
