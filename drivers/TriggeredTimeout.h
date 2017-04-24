@@ -52,17 +52,40 @@ public:
 
     TriggeredTimeout(PinName pin) {
         core_util_critical_section_enter();
-        triggeredtimeout_init(&_counter, pin);
+        triggeredtimeout_init(&_tt, pin, &TriggeredTimeout::_irq_handler, (uint32_t)this);
         core_util_critical_section_exit();
     }
 
     void attach(Callback<void()> func)
     {
-        _function.attach(func);
+        if(func) {
+            _function.attach(func);
+            trigger_set_irq(&_tt, interval);
+        } else {
+            _function.attach(donothing);
+            trigger_set_irq(&_tt, interval);
+        }
+    }
+
+    static void _irq_handler(uint32_t id) {
+        TriggeredTimeout *handler = (TriggeredTimeout*)id;
+        hanlder->_function.call();
+    }
+
+    void enable_irq() {
+        core_util_critical_section_enter();
+        trigger_irq_enable(&_tt);
+        core_util_critical_section_exit();
+    } 
+
+    void disable_irq() {
+        core_util_critical_section_enter();
+        trigger_irq_disable(&_tt);
+        core_util_critical_section_exit();
     }
 
 protected:
-    triggeredtimeout_t _counter;
+    triggeredtimeout_t _tt;
 
     Callback<void()> _function;
 };

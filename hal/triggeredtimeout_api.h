@@ -26,10 +26,7 @@
 extern "C" {
 #endif
 
-typedef enum {
-    IRQ_OVERFLOW,
-    IRQ_CC,
-} trigger_irq_event;
+typedef void (*trg_irq_handler)(uint32_t id);
 
 typedef enum {
 	TRG_2 = (int)TIM2_BASE,
@@ -37,29 +34,27 @@ typedef enum {
 } TRGName;
 
 const PinMap PinMap_TRG[] = {
+    {PA_15, CNT_2, STM_PIN_DATA_EXT(STM_MODE_AF_PP, GPIO_NOPULL, GPIO_AF1_TIM2, 1, 0)},
 	{NC, NC, 0}
 };
 
 struct triggeredtimeout_s {
     TRGName trg;
     PinName pin;
+    uint32_t prescaler;
+    uint32_t period;
     uint8_t channel;
-    uint8_t inverted;
 };
 
 typedef struct triggeredtimeout_s triggeredtimeout_t;
 
-typedef void (*triggeredtimeout_irq_handler)(uint32_t id, trigger_irq_event event);
+void triggeredtimeout_init(triggeredtimeout_t* obj, PinName pin, trg_irq_handler handler, uint32_t id);
 
-void triggeredtimeout_init(triggeredtimeout_t* obj, PinName pin);
+void trigger_set_irq( encoderin_t* obj, uint32_t interval );
 
-void triggeredtimeout_start(triggeredtimeout_t* obj);
+void trigger_irq_enable( encoderin_t* obj );
 
-void triggeredtimeout_reset(triggeredtimeout_t* obj);
-
-void triggeredtimeout_stop(triggeredtimeout_t* obj);
-
-uint32_t triggeredtimeout_read(triggeredtimeout_t* obj);
+void trigger_irq_disable( encoderin_t* obj );
 
 /**@}*/
 

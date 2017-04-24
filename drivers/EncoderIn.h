@@ -92,10 +92,10 @@ public:
 		core_util_critical_section_exit();	
 	}
 
-	/** Attach a function to be called by the Ticker, specifiying the interval in seconds
+	/** Attach a function to be called when the Encoder has reached a certain position
 	 *
 	 * @param func pointer to the function to be called
-	 * @param interval the time between calls in seconds
+	 * @param interval the location at which to trigger
 	 */
     void alarm1(Callback<void()> func, uint32_t interval) {
         core_util_critical_section_enter();
@@ -110,10 +110,10 @@ public:
         core_util_critical_section_exit();
     }
 
-	/** Attach a function to be called by the Ticker, specifiying the interval in seconds
+	/** Attach a function to be called by the Encoder has reached a certain position
 	 *
 	 * @param func pointer to the function to be called
-	 * @param interval the time between calls in seconds
+	 * @param interval the location at which to trigger
 	 */
     void alarm2(Callback<void()> func, uint32_t interval) {
         core_util_critical_section_enter();
