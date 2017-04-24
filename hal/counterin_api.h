@@ -26,6 +26,26 @@
 extern "C" {
 #endif
 
+typedef enum {
+    CNT_2 = (int)TIM2_BASE,
+    CNT_3 = (int)TIM3_BASE,
+    CNT_8 = (int)TIM8_BASE
+} CNTName;
+
+const PinMap PinMap_CNT[] = {
+    {PA_15, CNT_2, STM_PIN_DATA_EXT(STM_MODE_AF_PP, GPIO_NOPULL, GPIO_AF1_TIM2, 1, 0)},
+	{PC_6, CNT_3, STM_PIN_DATA_EXT(STM_MODE_AF_PP, GPIO_NOPULL, GPIO_AF2_TIM3, 1, 0)},
+	{PC_7, CNT_8, STM_PIN_DATA_EXT(STM_MODE_AF_PP, GPIO_NOPULL, GPIO_AF3_TIM8, 2, 0)},
+	{NC, NC, 0}
+};
+
+struct counterin_s {
+    CNTName cnt;
+    PinName pin;
+    uint8_t channel;
+    uint8_t inverted;
+};
+
 typedef struct counterin_s counterin_t;
 
 void counterin_init(counterin_t* obj, PinName pin);

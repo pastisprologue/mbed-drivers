@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef MERE_TRIGGERIN_API_H
-#define MERE_TRIGGERIN_API_H
+#ifndef TRIGGEREDTIMEOUT_API_H
+#define TRIGGEREDTIMEOUT_API_H
 
 #include "device.h"
 
-#if DEVICE_TRIGGERIN
+#if DEVICE_TRIGGEREDTIMEOUT
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,19 +31,35 @@ typedef enum {
     IRQ_CC,
 } trigger_irq_event;
 
-typedef struct triggerin_s triggerin_t;
+typedef enum {
+	TRG_2 = (int)TIM2_BASE,
+	TRG_5 = (int)TIM5_BASE
+} TRGName;
 
-typedef void (*triggerin_irq_handler)(uint32_t id, trigger_irq_event event);
+const PinMap PinMap_TRG[] = {
+	{NC, NC, 0}
+};
 
-void triggerin_init(triggerin_t* obj, PinName pin);
+struct triggeredtimeout_s {
+    TRGName trg;
+    PinName pin;
+    uint8_t channel;
+    uint8_t inverted;
+};
 
-void triggerin_start(triggerin_t* obj);
+typedef struct triggeredtimeout_s triggeredtimeout_t;
 
-void triggerin_reset(triggerin_t* obj);
+typedef void (*triggeredtimeout_irq_handler)(uint32_t id, trigger_irq_event event);
 
-void triggerin_stop(triggerin_t* obj);
+void triggeredtimeout_init(triggeredtimeout_t* obj, PinName pin);
 
-uint32_t triggerin_read(triggerin_t* obj);
+void triggeredtimeout_start(triggeredtimeout_t* obj);
+
+void triggeredtimeout_reset(triggeredtimeout_t* obj);
+
+void triggeredtimeout_stop(triggeredtimeout_t* obj);
+
+uint32_t triggeredtimeout_read(triggeredtimeout_t* obj);
 
 /**@}*/
 
