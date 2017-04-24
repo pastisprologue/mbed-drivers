@@ -19,6 +19,7 @@
 #define MERE_COUNTERIN_API_H
 
 #include "device.h"
+#include "pinmap.h"
 
 #if DEVICE_COUNTERIN
 

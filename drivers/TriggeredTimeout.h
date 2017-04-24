@@ -21,6 +21,9 @@
 #include "platform/critical.h"
 
 namespace mbed {
+
+static void donothing() {}
+
 /** \addtogroup drivers */
 /** @{*/
 
@@ -56,20 +59,30 @@ public:
         core_util_critical_section_exit();
     }
 
-    void attach(Callback<void()> func)
+    void attach(Callback<void()> func, float seconds)
+    {
+        attach_us(func, seconds * 1000000.0f);
+    }
+
+    void attach_ms(Callback<void()> func, int ms)
+    {
+       attach_us(func, ms * 1000); 
+    }
+
+    void attach_us(Callback<void()> func, int us)
     {
         if(func) {
             _function.attach(func);
-            trigger_set_irq(&_tt, interval);
+            trigger_set_irq(&_tt, us);
         } else {
             _function.attach(donothing);
-            trigger_set_irq(&_tt, interval);
+            trigger_set_irq(&_tt, us);
         }
     }
 
     static void _irq_handler(uint32_t id) {
         TriggeredTimeout *handler = (TriggeredTimeout*)id;
-        hanlder->_function.call();
+        handler->_function.call();
     }
 
     void enable_irq() {

@@ -19,6 +19,7 @@
 #define TRIGGEREDTIMEOUT_API_H
 
 #include "device.h"
+#include "pinmap.h"
 
 #if DEVICE_TRIGGEREDTIMEOUT
 
@@ -34,7 +35,7 @@ typedef enum {
 } TRGName;
 
 const PinMap PinMap_TRG[] = {
-    {PA_15, CNT_2, STM_PIN_DATA_EXT(STM_MODE_AF_PP, GPIO_NOPULL, GPIO_AF1_TIM2, 1, 0)},
+    {PA_15, TRG_2, STM_PIN_DATA_EXT(STM_MODE_AF_PP, GPIO_NOPULL, GPIO_AF1_TIM2, 1, 0)},
 	{NC, NC, 0}
 };
 
@@ -50,11 +51,11 @@ typedef struct triggeredtimeout_s triggeredtimeout_t;
 
 void triggeredtimeout_init(triggeredtimeout_t* obj, PinName pin, trg_irq_handler handler, uint32_t id);
 
-void trigger_set_irq( encoderin_t* obj, uint32_t interval );
+void trigger_set_irq(triggeredtimeout_t* obj, uint32_t interval);
 
-void trigger_irq_enable( encoderin_t* obj );
+void trigger_irq_enable(triggeredtimeout_t* obj );
 
-void trigger_irq_disable( encoderin_t* obj );
+void trigger_irq_disable( triggeredtimeout_t* obj );
 
 /**@}*/
 
