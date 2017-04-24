@@ -48,6 +48,8 @@ int main() {
 	}
 }
 ```
+### TODO:
+Allow user to choose between rising and falling edges triggering by changing ```attach``` to ```rise``` and ```fall```. Allow user to decide if the timeout occurs continuously and only once.
 
 ## CounterIn
 Pulse Trains are a pretty popular sensor output in which the sensor sends out a pulse for every specified amount of whatever it is sensing.  Examples of sensors that use this are Geiger counters, coloumb counters, and Hall Sensors.  Using InterruptIn is the way I initially counted these pulses, but if you have a really fast pulse train, then the MCU can end up spending a lot of time in the ISR, and it’s even possible to miss pulses.  Then I learned that some hardware timers can actually accept an external clock by which they increment their internal counter register.  The CounterIn can be configured to increment on rising edges, falling edges, or both, then you just read the counter register to know the count.  Beware: some timers are 16-bit, some are 32-bit, so where that counter register overflows will vary. 
@@ -80,6 +82,8 @@ int main() {
 	}
 }
 ```
+### TODO: 
+Allow user to choose between rising and falling edges triggering the count, probably at initialization. Allow user to set alarms, similar to those used in EncoderIn.
 
 ## EncoderIn
 Wow, wasn’t CounterIn super useful in freeing up processor time!?  What if CounterIn didn’t just count up, but instead also counted down depending on some other variable?  That’s where EncoderIn comes in. So EncoderIn takes two physical inputs, one that counts edges (just like CounterIn), and one that compares levels to know whether to count up or down.  Again, just read the counter register of the hardware timer you’re using and you’ll know position of your encoder, no processor time needed!  You can even set interrupts to trigger when certain positions are met! Woohoo!
