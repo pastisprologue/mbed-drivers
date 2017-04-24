@@ -42,7 +42,7 @@ static void donothing() {}
  * }
  *
  * int main() {
- *		triggeredTimeout.rise(&delayedISR, 5.0);
+ *		triggeredTimeout.attach(&delayedISR, 5.0);
  *		while(1) {
  *			//Loop forever
  *		}

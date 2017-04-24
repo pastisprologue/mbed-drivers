@@ -35,14 +35,14 @@ int main() {
 ```
 ### Using TriggeredTimeout:
 ```cpp
-TriggeredTimeout triggeredTimeout(p16);
+TriggeredTimeout triggeredTimeout(PA_15);
 
 void delayedTrigger() {
 	//delayedISR;
 }
 
 int main() {
-	triggeredTimeout.rise(&delayedTrigger, 5);
+	triggeredTimeout.attach(&delayedTrigger, 5);
 	while(1) {
 		//Loop forever
 	}
