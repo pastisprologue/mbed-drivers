@@ -48,7 +48,7 @@ int main() {
 	}
 }
 ```
-### TODO:
+#### TODO:
 Allow user to choose between rising and falling edges triggering by changing ```attach``` to ```rise``` and ```fall```. Allow user to decide if the timeout occurs continuously and only once.
 
 ## CounterIn
@@ -82,7 +82,7 @@ int main() {
 	}
 }
 ```
-### TODO: 
+#### TODO: 
 Allow user to choose between rising and falling edges triggering the count, probably at initialization. Allow user to set alarms, similar to those used in EncoderIn.
 
 ## EncoderIn
